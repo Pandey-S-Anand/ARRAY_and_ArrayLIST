@@ -1,0 +1,46 @@
+//Bruteforce Approach
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        int maxProfit = 0; // Stores the maximum profit found so far
+
+        // Try every possible buy day
+        for (int buyDay = 0; buyDay < prices.length; buyDay++) {
+            // For each buy day, try every possible future sell day
+            for (int sellDay = buyDay + 1; sellDay < prices.length; sellDay++) {
+                int profit = prices[sellDay] - prices[buyDay]; // Calculate profit for this pair
+                maxProfit = Math.max(maxProfit, profit); // Update maxProfit if this one is better
+            }
+        }
+
+        return maxProfit;
+    }
+}
+
+
+//Optimal Approach
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        /*
+         * maxProfit → stores the maximum profit achievable so far
+         * bestBuyingPriceSoFar → minimum price seen till current day
+         */
+        int maxProfit = 0;
+        int bestBuyingPriceSoFar = prices[0];
+
+        // Start from day 1, using day 0 as the initial minimum price
+        for (int sellDay = 1; sellDay < prices.length; sellDay++) {
+            //Profit if we sell today after buying at the lowest price seen so far.
+            int profit = prices[sellDay] - bestBuyingPriceSoFar;
+
+            //Update the maximum profit.
+            maxProfit = Math.max(maxProfit, profit);
+
+            //Update the best buying price for future days.
+            bestBuyingPriceSoFar = Math.min(bestBuyingPriceSoFar, prices[sellDay]);
+        }
+
+        return maxProfit;
+    }
+}
